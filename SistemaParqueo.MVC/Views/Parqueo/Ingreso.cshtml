@@ -1,0 +1,53 @@
+﻿@model SistemaParqueo.MVC.Models.VehiculoIngresoViewModel
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4>Registrar Ingreso de Vehículo</h4>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Ingreso" method="post">
+
+                <div class="mb-3">
+                    <label class="form-label">Placa</label>
+                    <input asp-for="Placa" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Tipo Tarifa</label>
+                    <select asp-for="TipoTarifa" class="form-select">
+                        <option value="VIP">VIP</option>
+                        <option value="ESTANDAR">ESTANDAR</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Usuario</label>
+                    <input asp-for="Usuario" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Observaciones</label>
+                    <textarea asp-for="Observaciones" class="form-control"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    Registrar Ingreso
+                </button>
+
+            </form>
+
+            @if (ViewBag.Mensaje != null)
+            {
+                <div class="alert alert-success mt-3">
+                    @ViewBag.Mensaje
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>

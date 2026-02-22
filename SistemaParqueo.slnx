@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="SistemaParqueo.API/SistemaParqueo.API.csproj" />
+  <Project Path="SistemaParqueo.Core/SistemaParqueo.Core.csproj" />
+  <Project Path="SistemaParqueo.MVC/SistemaParqueo.MVC.csproj" />
+</Solution>

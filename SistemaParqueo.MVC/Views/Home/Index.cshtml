@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="container mt-4">
+
+    <div class="text-center mb-4">
+        <h1 class="display-5 fw-bold">Sistema de Parqueadero</h1>
+        <p class="text-muted">Administración de ingreso y salida de vehículos</p>
+    </div>
+
+    <!-- TARJETAS -->
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Vehículos Activos</h6>
+                    <h3 class="fw-bold text-primary">@ViewBag.Activos</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Espacios Disponibles</h6>
+                    <h3 class="fw-bold text-success">@ViewBag.Disponibles</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Espacios Ocupados</h6>
+                    <h3 class="fw-bold text-danger">@ViewBag.Ocupados</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h6 class="text-muted">Recaudado Hoy</h6>
+                    <h3 class="fw-bold text-warning">$ @ViewBag.Recaudado</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ACCIONES -->
+    <div class="row text-center">
+
+        <div class="col-md-3">
+            <a class="btn btn-primary w-100 p-3" asp-controller="Parqueo" asp-action="Ingreso">
+                🚗 Registrar Ingreso
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a class="btn btn-success w-100 p-3" asp-controller="Parqueo" asp-action="Salida">
+                🅿 Registrar Salida
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a class="btn btn-warning w-100 p-3" asp-controller="Parqueo" asp-action="Activos">
+                📋 Vehículos Activos
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a class="btn btn-info w-100 p-3" asp-controller="Parqueo" asp-action="Reporte">
+                📊 Reporte Diario
+            </a>
+        </div>
+
+    </div>
+</div>

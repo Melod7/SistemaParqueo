@@ -1,0 +1,21 @@
+﻿<h2>Vehículos Activos</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Placa</th>
+            <th>Tipo Tarifa</th>
+            <th>Fecha Ingreso</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Placa</td>
+                <td>@item.TipoTarifa</td>
+                <td>@item.FechaIngreso</td>
+            </tr>
+        }
+    </tbody>
+</table>

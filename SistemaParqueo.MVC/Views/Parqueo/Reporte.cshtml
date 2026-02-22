@@ -1,0 +1,20 @@
+﻿<form asp-action="Reporte" method="get">
+    <div class="row">
+        <div class="col-md-4">
+            <input type="date" name="fecha" class="form-control" required />
+        </div>
+
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-info">
+                Consultar
+            </button>
+        </div>
+    </div>
+</form>
+
+@if (ViewBag.Total != null)
+{
+    <div class="alert alert-success mt-3">
+        Total recaudado: <strong>$ @ViewBag.Total</strong>
+    </div>
+}
