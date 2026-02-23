@@ -1,20 +1,21 @@
-﻿<form asp-action="Reporte" method="get">
-    <div class="row">
-        <div class="col-md-4">
-            <input type="date" name="fecha" class="form-control" required />
-        </div>
+﻿@{
+    ViewData["Title"] = "Reporte Diario";
+}
 
-        <div class="col-md-4">
-            <button type="submit" class="btn btn-info">
-                Consultar
-            </button>
-        </div>
+<h2>Reporte Diario</h2>
+
+<form method="get">
+    <div class="form-group">
+        <label>Fecha</label>
+        <input type="date" name="fecha" class="form-control" required />
     </div>
+    <br />
+    <button class="btn btn-primary">Consultar</button>
 </form>
 
 @if (ViewBag.Total != null)
 {
     <div class="alert alert-success mt-3">
-        Total recaudado: <strong>$ @ViewBag.Total</strong>
+        Total recaudado: $ @ViewBag.Total
     </div>
 }

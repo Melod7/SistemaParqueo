@@ -68,19 +68,36 @@ public class ParqueoController : Controller
 
         var response = await _apiService.GetAsync($"Ingresos/historial/{placa}");
 
-        return View(JsonConvert.DeserializeObject<List<VehiculoActivoViewModel>>(response));
+        if (string.IsNullOrEmpty(response))
+        {
+            ViewBag.Error = "No se encontró historial para esta placa";
+            return View();
+        }
+
+        var datos = JsonConvert.DeserializeObject<List<VehiculoIngresoViewModel>>(response);
+
+        return View(datos);
     }
 
-    public async Task<IActionResult> Reporte(DateTime? fecha)
+    public async Task<IActionResult> Reporte(DateTime fecha)
     {
-        if (!fecha.HasValue)
-            return View();
+        var response = await _apiService.GetAsync($"Reportes/recaudado-dia?fecha={fecha:yyyy-MM-dd}");
+        ViewBag.Total = response;
 
-        // Convertir a UTC correctamente
-        var fechaUtc = DateTime.SpecifyKind(fecha.Value, DateTimeKind.Utc);
+        return View();
+    }
+    public async Task<IActionResult> Dashboard()
+    {
+        var response = await _apiService.GetAsync("Reportes/dashboard");
 
-        var response = await _apiService
-            .GetAsync($"Reportes/recaudado-dia?fecha={fechaUtc:yyyy-MM-dd}");
+        var datos = JsonConvert.DeserializeObject<List<DashboardItemViewModel>>(response);
+
+        return View(datos);
+    }
+    public async Task<IActionResult> ReporteRango(DateTime inicio, DateTime fin)
+    {
+        var response = await _apiService.GetAsync(
+            $"Reportes/recaudado-rango?inicio={inicio:yyyy-MM-dd}&fin={fin:yyyy-MM-dd}");
 
         ViewBag.Total = response;
 

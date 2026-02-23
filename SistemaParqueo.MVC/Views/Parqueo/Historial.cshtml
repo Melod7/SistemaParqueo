@@ -1,15 +1,68 @@
-﻿<h2>Historial por Placa</h2>
+﻿@model List<SistemaParqueo.MVC.Models.VehiculoIngresoViewModel>
 
-<form asp-action="Historial" method="get">
-    <div>
-        <label>Placa:</label>
-        <input name="placa" required />
-        <button type="submit">Buscar</button>
+@{
+    ViewData["Title"] = "Historial por Placa";
+}
+
+<h2>Historial por Placa</h2>
+
+<form method="get" asp-action="Historial" asp-controller="Parqueo">
+    <div class="row">
+        <div class="col-md-4">
+            <label>Placa:</label>
+            <input type="text" name="placa" class="form-control" required />
+        </div>
+
+        <div class="col-md-2">
+            <br />
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
     </div>
 </form>
 
-@if (ViewBag.Datos != null)
+<br />
+
+@if (ViewBag.Error != null)
 {
-    <h3>Resultados</h3>
-    <pre>@ViewBag.Datos</pre>
+    <div class="alert alert-warning">
+        @ViewBag.Error
+    </div>
+}
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Placa</th>
+                <th>Tipo Tarifa</th>
+                <th>Fecha Ingreso</th>
+                <th>Fecha Salida</th>
+                <th>Horas</th>
+                <th>Monto</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Placa</td>
+                    <td>@item.TipoTarifa</td>
+                    <td>@item.FechaIngreso</td>
+
+                    <td>
+                        @(item.Salida != null ? item.Salida.FechaSalida.ToString() : "-")
+                    </td>
+
+                    <td>
+                        @(item.Salida != null ? item.Salida.HorasCalculadas.ToString() : "-")
+                    </td>
+
+                    <td>
+                        @(item.Salida != null ? "$ " + item.Salida.MontoCobrado.ToString() : "-")
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }

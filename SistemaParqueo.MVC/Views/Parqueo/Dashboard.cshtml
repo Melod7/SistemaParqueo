@@ -1,0 +1,25 @@
+﻿<h2>Últimos movimientos</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Placa</th>
+            <th>Tarifa</th>
+            <th>Ingreso</th>
+            <th>Salida</th>
+            <th>Monto</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Placa</td>
+                <td>@item.TipoTarifa</td>
+                <td>@item.FechaIngreso</td>
+                <td>@item.FechaSalida</td>
+                <td>$ @item.Monto</td>
+            </tr>
+        }
+    </tbody>
+</table>

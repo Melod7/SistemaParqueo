@@ -21,6 +21,18 @@ public class IngresosController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> RegistrarIngreso([FromBody] CrearIngresoDto dto)
     {
+        if (string.IsNullOrEmpty(dto.Placa))
+            return BadRequest("La placa es obligatoria");
+
+        if (!new[] { "VIP", "ESTANDAR" }.Contains(dto.TipoTarifa.ToUpper()))
+            return BadRequest("Tipo de tarifa inválido");
+
+        var existeActivo = _context.Ingresos
+            .Any(i => i.Placa == dto.Placa && i.Activo);
+
+        if (existeActivo)
+            return BadRequest("El vehículo ya se encuentra dentro del parqueadero");
+
         var ingreso = new VehiculoIngreso
         {
             Placa = dto.Placa,
@@ -43,6 +55,12 @@ public class IngresosController : ControllerBase
     {
         var activos = await _context.Ingresos
             .Where(v => v.Activo)
+            .Select(v => new
+            {
+                v.Placa,
+                v.TipoTarifa,
+                v.FechaIngreso
+            })
             .ToListAsync();
 
         return Ok(activos);
@@ -53,12 +71,21 @@ public class IngresosController : ControllerBase
     public async Task<IActionResult> Historial(string placa)
     {
         var historial = await _context.Ingresos
-            .Include(v => v.Salida)
-            .Where(v => v.Placa == placa)
+            .Include(i => i.Salida)
+            .Where(i => i.Placa == placa)
+            .Select(i => new HistorialDto
+            {
+                Placa = i.Placa,
+                TipoTarifa = i.TipoTarifa,
+                FechaIngreso = i.FechaIngreso,
+                FechaSalida = i.Salida != null ? i.Salida.FechaSalida : null,
+                Horas = i.Salida != null ? i.Salida.HorasCalculadas : 0,
+                Monto = i.Salida != null ? i.Salida.MontoCobrado : 0
+            })
             .ToListAsync();
 
-        if (_context.Ingresos.Count() > 0)
-            return NotFound("No se encontró historial para esta placa");
+        if (!historial.Any())
+            return NotFound("No existe historial");
 
         return Ok(historial);
     }

@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using SistemaParqueo.API.Data;
 using SistemaParqueo.Core.Entities;
-using SistemaParqueo.Core.Services;
 
 namespace SistemaParqueo.API.Controllers;
 
@@ -21,34 +20,35 @@ public class SalidasController : ControllerBase
     public async Task<IActionResult> RegistrarSalida(string placa)
     {
         var ingreso = await _context.Ingresos
-            .FirstOrDefaultAsync(x => x.Placa == placa && x.Activo);
+            .FirstOrDefaultAsync(i => i.Placa == placa && i.Activo);
 
         if (ingreso == null)
-            return NotFound("Vehículo no encontrado o ya salió.");
+            return NotFound("El vehículo no está dentro del parqueadero");
 
-        var salida = new VehiculoSalida();
+        var fechaSalida = DateTime.UtcNow;
 
-        salida.IngresoId = ingreso.Id;
-        salida.FechaSalida = DateTime.UtcNow;
+        var horas = (DateTime.UtcNow - ingreso.FechaIngreso).TotalHours;
+        var horasCalculadas = (int)Math.Ceiling(horas);
 
-        // calcular horas correctamente
-        var horas = (salida.FechaSalida - ingreso.FechaIngreso).TotalHours;
+        decimal monto;
 
-        salida.HorasCalculadas = (int)Math.Ceiling(horas);
-
-        // tarifas
         if (ingreso.TipoTarifa == "VIP")
         {
-            salida.MontoCobrado = salida.HorasCalculadas > 5
-                ? 8
-                : salida.HorasCalculadas * 2;
+            monto = horasCalculadas > 5 ? 8 : horasCalculadas * 2;
         }
         else
         {
-            salida.MontoCobrado = salida.HorasCalculadas > 5
-                ? 5
-                : salida.HorasCalculadas * 1;
+            monto = horasCalculadas > 5 ? 5 : horasCalculadas * 1;
         }
+
+        var salida = new VehiculoSalida
+        {
+            IngresoId = ingreso.Id,
+            FechaSalida = fechaSalida,
+            HorasCalculadas = horasCalculadas,
+            MontoCobrado = monto,
+            MetodoPago = "EFECTIVO"
+        };
 
         ingreso.Activo = false;
 

@@ -1,0 +1,25 @@
+﻿<h2>Reporte por Rango</h2>
+
+<form method="get">
+    <div class="row">
+        <div class="col-md-4">
+            <label>Desde</label>
+            <input type="date" name="inicio" class="form-control" required />
+        </div>
+
+        <div class="col-md-4">
+            <label>Hasta</label>
+            <input type="date" name="fin" class="form-control" required />
+        </div>
+    </div>
+
+    <br />
+    <button class="btn btn-primary">Consultar</button>
+</form>
+
+@if (ViewBag.Total != null)
+{
+    <div class="alert alert-success mt-3">
+        Total recaudado: $ @ViewBag.Total
+    </div>
+}
