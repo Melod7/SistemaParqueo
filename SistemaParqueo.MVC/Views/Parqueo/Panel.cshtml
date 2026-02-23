@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Panel Principal";
+}
+
+<div class="text-center mb-4">
+    <h2>Panel de Control</h2>
+    <p>Bienvenido al sistema de parqueo</p>
+</div>
+
+<div class="row text-center">
+
+    <div class="col-md-4 mb-3">
+        <a asp-controller="Parqueo" asp-action="Ingreso" class="btn btn-success w-100 p-4">
+            🚗 Registrar Ingreso
+        </a>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <a asp-controller="Parqueo" asp-action="Salida" class="btn btn-danger w-100 p-4">
+            🚙 Registrar Salida
+        </a>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <a asp-controller="Parqueo" asp-action="Activos" class="btn btn-primary w-100 p-4">
+            📋 Vehículos Activos
+        </a>
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <a asp-controller="Parqueo" asp-action="Historial" class="btn btn-warning w-100 p-4">
+            🔎 Historial por Placa
+        </a>
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <a asp-controller="Parqueo" asp-action="Reporte" class="btn btn-dark w-100 p-4">
+            📊 Reportes
+        </a>
+    </div>
+
+</div>

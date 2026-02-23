@@ -1,0 +1,51 @@
+﻿@model List<ReporteDetalleViewModel>
+
+<h2>Reporte detallado por rango</h2>
+
+<form method="get">
+    <div class="row">
+        <div class="col-md-4">
+            <label>Fecha inicio</label>
+            <input type="date" name="inicio" class="form-control" required />
+        </div>
+
+        <div class="col-md-4">
+            <label>Fecha fin</label>
+            <input type="date" name="fin" class="form-control" required />
+        </div>
+
+        <div class="col-md-4">
+            <br />
+            <button class="btn btn-primary">Consultar</button>
+        </div>
+    </div>
+</form>
+
+@if (Model != null && Model.Count > 0)
+{
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Placa</th>
+                <th>Tarifa</th>
+                <th>Ingreso</th>
+                <th>Salida</th>
+                <th>Horas</th>
+                <th>Monto</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Placa</td>
+                    <td>@item.Tarifa</td>
+                    <td>@item.FechaIngreso.ToLocalTime()</td>
+                    <td>@item.FechaSalida.ToLocalTime()</td>
+                    <td>@item.Horas</td>
+                    <td>$ @item.Monto</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

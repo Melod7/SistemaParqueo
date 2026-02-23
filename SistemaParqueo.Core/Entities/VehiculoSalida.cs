@@ -13,7 +13,7 @@ namespace SistemaParqueo.Core.Entities
         public int HorasCalculadas { get; set; }
         public decimal MontoCobrado { get; set; }
         public string? MetodoPago { get; set; }
+        public VehiculoIngreso? Ingreso { get; set; }
 
-        public VehiculoIngreso Ingreso { get; set; } 
     }
 }

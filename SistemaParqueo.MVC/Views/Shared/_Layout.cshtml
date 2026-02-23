@@ -15,7 +15,7 @@
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark shadow">
             <div class="container-fluid">
 
-                <a class="navbar-brand" asp-controller="Parqueo" asp-action="Dashboard">
+                <a class="navbar-brand" asp-controller="Parqueo" asp-action="Panel">
                     🚗 Sistema Parqueo
                 </a>
 
@@ -25,58 +25,93 @@
 
                 <div class="collapse navbar-collapse" id="menu">
 
-                    <ul class="navbar-nav me-auto">
+                    @{
+                        var usuario = Context.Session.GetString("Usuario");
+                        var rol = Context.Session.GetString("Rol");
+                    }
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Parqueo" asp-action="Dashboard">
-                                Dashboard
-                            </a>
-                        </li>
+                    @* MENÚ SOLO SI ESTÁ LOGUEADO *@
+                    @if (usuario != null)
+                    {
+                        <ul class="navbar-nav me-auto">
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Parqueo" asp-action="Ingreso">
-                                Registrar Ingreso
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Parqueo" asp-action="Panel">
+                                    Panel principal
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Parqueo" asp-action="Salida">
-                                Registrar Salida
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Parqueo" asp-action="Dashboard">
+                                    Dashboard
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Parqueo" asp-action="Activos">
-                                Vehículos Activos
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Parqueo" asp-action="Ingreso">
+                                    Registrar Ingreso
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Parqueo" asp-action="Historial">
-                                Historial
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Parqueo" asp-action="Salida">
+                                    Registrar Salida
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Parqueo" asp-action="Reporte">
-                                Reportes
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Parqueo" asp-action="Activos">
+                                    Vehículos Activos
+                                </a>
+                            </li>
 
-                    </ul>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Parqueo" asp-action="Historial">
+                                    Historial
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Parqueo" asp-action="Reporte">
+                                    Reportes
+                                </a>
+                            </li>
+
+                        </ul>
+                    }
+
+                    @* USUARIO LOGUEADO *@
+                    @if (usuario != null)
+                    {
+                        <ul class="navbar-nav ms-auto">
+
+                            <li class="nav-item">
+                                <span class="nav-link text-white">
+                                    👤 @usuario (@rol)
+                                </span>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="Account" asp-action="Logout">
+                                    Salir
+                                </a>
+                            </li>
+
+                        </ul>
+                    }
 
                 </div>
             </div>
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container mt-3">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted mt-4">
         <div class="container text-center">
             © 2026 - Sistema de Parqueo Vehicular
         </div>

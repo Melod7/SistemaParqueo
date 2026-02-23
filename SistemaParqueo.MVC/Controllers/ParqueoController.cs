@@ -14,6 +14,32 @@ public class ParqueoController : Controller
         _apiService = apiService;
     }
 
+    // ================= PANEL =================
+
+    public IActionResult Panel()
+    {
+        if (HttpContext.Session.GetString("Usuario") == null)
+            return RedirectToAction("Login", "Account");
+
+        return View();
+    }
+
+    // ================= DASHBOARD =================
+
+    public async Task<IActionResult> Dashboard()
+    {
+        if (HttpContext.Session.GetString("Usuario") == null)
+            return RedirectToAction("Login", "Account");
+
+        var response = await _apiService.GetAsync("Reportes/dashboard");
+
+        var datos = JsonConvert.DeserializeObject<List<DashboardItemViewModel>>(response);
+
+        return View(datos);
+    }
+
+    // ================= INGRESO =================
+
     public IActionResult Ingreso()
     {
         return View();
@@ -24,17 +50,14 @@ public class ParqueoController : Controller
     {
         var response = await _apiService.PostAsync("Ingresos", model);
 
-        if (response.Contains("error") || response.Contains("Exception"))
-        {
-            ViewBag.Mensaje = "Error al registrar vehículo";
-        }
-        else
-        {
-            ViewBag.Mensaje = "Vehículo registrado correctamente";
-        }
+        ViewBag.Mensaje = response.Contains("error")
+            ? "Error al registrar vehículo"
+            : "Vehículo registrado correctamente";
 
         return View();
     }
+
+    // ================= SALIDA =================
 
     public IActionResult Salida()
     {
@@ -52,6 +75,8 @@ public class ParqueoController : Controller
         return View();
     }
 
+    // ================= ACTIVOS =================
+
     public async Task<IActionResult> Activos()
     {
         var response = await _apiService.GetAsync("Ingresos/activos");
@@ -61,6 +86,8 @@ public class ParqueoController : Controller
         return View(lista);
     }
 
+    // ================= HISTORIAL =================
+
     public async Task<IActionResult> Historial(string placa)
     {
         if (string.IsNullOrEmpty(placa))
@@ -68,32 +95,24 @@ public class ParqueoController : Controller
 
         var response = await _apiService.GetAsync($"Ingresos/historial/{placa}");
 
-        if (string.IsNullOrEmpty(response))
-        {
-            ViewBag.Error = "No se encontró historial para esta placa";
-            return View();
-        }
-
         var datos = JsonConvert.DeserializeObject<List<VehiculoIngresoViewModel>>(response);
 
         return View(datos);
     }
 
+    // ================= REPORTE DIARIO =================
+
     public async Task<IActionResult> Reporte(DateTime fecha)
     {
         var response = await _apiService.GetAsync($"Reportes/recaudado-dia?fecha={fecha:yyyy-MM-dd}");
+
         ViewBag.Total = response;
 
         return View();
     }
-    public async Task<IActionResult> Dashboard()
-    {
-        var response = await _apiService.GetAsync("Reportes/dashboard");
 
-        var datos = JsonConvert.DeserializeObject<List<DashboardItemViewModel>>(response);
+    // ================= REPORTE RANGO =================
 
-        return View(datos);
-    }
     public async Task<IActionResult> ReporteRango(DateTime inicio, DateTime fin)
     {
         var response = await _apiService.GetAsync(
@@ -102,5 +121,17 @@ public class ParqueoController : Controller
         ViewBag.Total = response;
 
         return View();
+    }
+    public async Task<IActionResult> ReporteDetalle(DateTime inicio, DateTime fin)
+    {
+        if (inicio == default || fin == default)
+            return View();
+
+        var response = await _apiService.GetAsync(
+            $"Reportes/detalle-rango?inicio={inicio:yyyy-MM-dd}&fin={fin:yyyy-MM-dd}");
+
+        var lista = JsonConvert.DeserializeObject<List<ReporteDetalleViewModel>>(response);
+
+        return View(lista);
     }
 }

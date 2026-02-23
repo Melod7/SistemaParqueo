@@ -12,6 +12,7 @@ public class ParqueoDbContext : DbContext
 
     public DbSet<VehiculoIngreso> Ingresos { get; set; }
     public DbSet<VehiculoSalida> Salidas { get; set; }
+    public DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

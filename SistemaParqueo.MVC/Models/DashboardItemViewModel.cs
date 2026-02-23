@@ -7,5 +7,6 @@
         public DateTime FechaIngreso { get; set; }
         public DateTime? FechaSalida { get; set; }
         public decimal Monto { get; set; }
+        public string Estado { get; set; } = string.Empty;
     }
 }

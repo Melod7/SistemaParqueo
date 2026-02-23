@@ -71,21 +71,21 @@ public class IngresosController : ControllerBase
     public async Task<IActionResult> Historial(string placa)
     {
         var historial = await _context.Ingresos
-            .Include(i => i.Salida)
             .Where(i => i.Placa == placa)
-            .Select(i => new HistorialDto
+            .OrderByDescending(i => i.FechaIngreso)
+            .Select(i => new
             {
-                Placa = i.Placa,
-                TipoTarifa = i.TipoTarifa,
-                FechaIngreso = i.FechaIngreso,
-                FechaSalida = i.Salida != null ? i.Salida.FechaSalida : null,
-                Horas = i.Salida != null ? i.Salida.HorasCalculadas : 0,
-                Monto = i.Salida != null ? i.Salida.MontoCobrado : 0
+                i.Placa,
+                i.TipoTarifa,
+                i.FechaIngreso,
+                Salida = i.Salida == null ? null : new
+                {
+                    i.Salida.FechaSalida,
+                    i.Salida.HorasCalculadas,
+                    i.Salida.MontoCobrado
+                }
             })
             .ToListAsync();
-
-        if (!historial.Any())
-            return NotFound("No existe historial");
 
         return Ok(historial);
     }

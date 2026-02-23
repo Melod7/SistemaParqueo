@@ -4,6 +4,10 @@
     ViewData["Title"] = "Historial por Placa";
 }
 
+<a asp-controller="Parqueo" asp-action="Panel" class="btn btn-outline-secondary mb-3">
+    ← Volver al panel principal
+</a>
+
 <h2>Historial por Placa</h2>
 
 <form method="get" asp-action="Historial" asp-controller="Parqueo">
@@ -48,18 +52,23 @@
                 <tr>
                     <td>@item.Placa</td>
                     <td>@item.TipoTarifa</td>
-                    <td>@item.FechaIngreso</td>
 
                     <td>
-                        @(item.Salida != null ? item.Salida.FechaSalida.ToString() : "-")
+                        @item.FechaIngreso.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
                     </td>
 
                     <td>
-                        @(item.Salida != null ? item.Salida.HorasCalculadas.ToString() : "-")
+                        @(item.Salida != null
+                                        ? item.Salida.FechaSalida.ToLocalTime().ToString("dd/MM/yyyy HH:mm")
+                                        : "-")
                     </td>
 
                     <td>
-                        @(item.Salida != null ? "$ " + item.Salida.MontoCobrado.ToString() : "-")
+                        @(item.Salida != null ? item.Salida.HorasCalculadas : "-")
+                    </td>
+
+                    <td>
+                        @(item.Salida != null ? "$ " + item.Salida.MontoCobrado : "-")
                     </td>
                 </tr>
             }

@@ -25,9 +25,13 @@ public class SalidasController : ControllerBase
         if (ingreso == null)
             return NotFound("El vehículo no está dentro del parqueadero");
 
-        var fechaSalida = DateTime.UtcNow;
+        var fechaSalida = DateTime.Now;
 
-        var horas = (DateTime.UtcNow - ingreso.FechaIngreso).TotalHours;
+        var horas = (fechaSalida - ingreso.FechaIngreso).TotalHours;
+
+        if (horas < 0)
+            horas = 0;
+
         var horasCalculadas = (int)Math.Ceiling(horas);
 
         decimal monto;

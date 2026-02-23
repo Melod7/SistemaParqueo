@@ -1,25 +1,30 @@
-﻿<h2>Reporte por Rango</h2>
+﻿<h2>Reporte por rango de fechas</h2>
 
+<a asp-controller="Parqueo" asp-action="Panel" class="btn btn-outline-secondary mb-3">
+    ← Volver al panel principal
+</a>
 <form method="get">
     <div class="row">
         <div class="col-md-4">
-            <label>Desde</label>
+            <label>Fecha inicio</label>
             <input type="date" name="inicio" class="form-control" required />
         </div>
 
         <div class="col-md-4">
-            <label>Hasta</label>
+            <label>Fecha fin</label>
             <input type="date" name="fin" class="form-control" required />
         </div>
-    </div>
 
-    <br />
-    <button class="btn btn-primary">Consultar</button>
+        <div class="col-md-4">
+            <br />
+            <button class="btn btn-primary">Consultar</button>
+        </div>
+    </div>
 </form>
 
 @if (ViewBag.Total != null)
 {
     <div class="alert alert-success mt-3">
-        Total recaudado: $ @ViewBag.Total
+        Total recaudado en el rango: $ @ViewBag.Total
     </div>
 }

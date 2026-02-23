@@ -9,7 +9,7 @@
         public string Usuario { get; set; } = string.Empty;
         public string Observaciones { get; set; } = string.Empty;
         public bool Activo { get; set; }
+        public VehiculoSalidaViewModel? Salida { get; set; }
 
-        public VehiculoSalidaViewModel Salida { get; set; }
     }
 }
